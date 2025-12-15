@@ -231,6 +231,23 @@
             animation: fadeIn 0.2s ease-in forwards;
         }
 
+        /* 未答题提示抖动动画 */
+        @keyframes shakeHint {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+
+        .shake-hint {
+            animation: shakeHint 0.5s ease-out;
+        }
+
+        .shake-hint .option-item {
+            border-color: var(--danger-color) !important;
+        }
+
         /* 选项选中动画 */
         @keyframes optionSelect {
             0% { transform: scale(1); }
@@ -410,9 +427,15 @@
             background: var(--primary-hover);
         }
 
-        .btn-next:disabled {
+        .btn-next:disabled,
+        .btn-next.btn-disabled {
             background: #bfbfbf;
             cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn-next.btn-disabled:hover {
+            background: #bfbfbf;
         }
 
         /* 结果页面样式 */
@@ -1724,11 +1747,24 @@
         let answers = new Array(90).fill(null);
         let currentQuestion = 0;
 
+        // 更新下一题按钮状态
+        function updateNextButtonState() {
+            const btnNext = document.getElementById('btn-next');
+            if (answers[currentQuestion] === null) {
+                btnNext.disabled = true;
+                btnNext.classList.add('btn-disabled');
+            } else {
+                btnNext.disabled = false;
+                btnNext.classList.remove('btn-disabled');
+            }
+        }
+
         // 开始测试
         function startTest() {
             document.getElementById('intro-page').classList.add('hidden');
             document.getElementById('question-page').classList.add('active');
             showQuestion(0);
+            updateNextButtonState();
         }
 
         // 显示问题
@@ -1767,13 +1803,16 @@
                     });
                 }
                 
-                // 更新按钮文字
+                // 更新按钮文字和状态
                 const btnNext = document.getElementById('btn-next');
                 if (index === 89) {
                     btnNext.textContent = '提交测试';
                 } else {
                     btnNext.textContent = '下一题';
                 }
+                
+                // 根据是否已作答更新按钮状态
+                updateNextButtonState();
             }
             
             // 如果需要动画效果
@@ -1826,6 +1865,9 @@
             document.getElementById('answered-count').textContent = answeredCount;
             document.getElementById('unanswered-count').textContent = 90 - answeredCount;
             
+            // 更新按钮状态
+            updateNextButtonState();
+            
             // 自动跳转下一题（最后一题除外），带动画效果
             if (currentQuestion < 89) {
                 setTimeout(() => {
@@ -1843,6 +1885,17 @@
 
         // 下一题
         function nextQuestion() {
+            // 检查当前题目是否已作答
+            if (answers[currentQuestion] === null) {
+                // 未作答，给出提示效果
+                const optionsList = document.querySelector('.options-list');
+                optionsList.classList.add('shake-hint');
+                setTimeout(() => {
+                    optionsList.classList.remove('shake-hint');
+                }, 500);
+                return;
+            }
+            
             if (currentQuestion < 89) {
                 showQuestion(currentQuestion + 1, true);
             } else {
