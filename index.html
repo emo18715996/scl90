@@ -1735,6 +1735,13 @@
         function showQuestion(index, animate = false) {
             const questionTitle = document.getElementById('question-title');
             const optionsList = document.querySelector('.options-list');
+            const options = document.querySelectorAll('.option-item');
+            
+            // 立即清除所有选项的选中状态和波纹效果
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+                opt.classList.remove('ripple');
+            });
             
             // 更新内容的函数
             function updateContent() {
@@ -1751,14 +1758,14 @@
                 document.getElementById('answered-count').textContent = answeredCount;
                 document.getElementById('unanswered-count').textContent = 90 - answeredCount;
                 
-                // 更新选项状态
-                const options = document.querySelectorAll('.option-item');
-                options.forEach((opt, i) => {
-                    opt.classList.remove('selected');
-                    if (answers[index] === i + 1) {
-                        opt.classList.add('selected');
-                    }
-                });
+                // 更新选项状态 - 只有当前题目有答案时才选中
+                if (answers[index] !== null) {
+                    options.forEach((opt, i) => {
+                        if (answers[index] === i + 1) {
+                            opt.classList.add('selected');
+                        }
+                    });
+                }
                 
                 // 更新按钮文字
                 const btnNext = document.getElementById('btn-next');
