@@ -208,6 +208,64 @@
             display: block;
         }
 
+        /* 题目切换动画 - 淡出淡入 */
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .question-content {
+            transition: opacity 0.2s ease;
+        }
+
+        .question-fade-out {
+            animation: fadeOut 0.15s ease-out forwards;
+        }
+
+        .question-fade-in {
+            animation: fadeIn 0.2s ease-in forwards;
+        }
+
+        /* 选项选中动画 */
+        @keyframes optionSelect {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.98); }
+            100% { transform: scale(1); }
+        }
+
+        .option-item.selected {
+            animation: optionSelect 0.2s ease-out;
+        }
+
+        /* 选项点击波纹效果 */
+        .option-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-item::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(74, 144, 217, 0.15);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        .option-item.ripple::after {
+            width: 300%;
+            height: 300%;
+        }
+
         .progress-bar-container {
             background: #fff3cd;
             border-radius: 10px;
@@ -599,6 +657,8 @@
 
         .circle-progress svg {
             transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
         }
 
         .circle-progress .bg-circle {
@@ -776,50 +836,333 @@
         }
 
         /* 响应式设计 */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 12px;
             }
 
             .card-header {
-                padding: 30px 20px;
+                padding: 28px 18px;
             }
 
             .card-header h1 {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
+            }
+
+            .card-header .subtitle {
+                font-size: 0.9rem;
             }
 
             .card-body {
-                padding: 20px;
+                padding: 18px;
+            }
+
+            .intro-text {
+                font-size: 0.95rem;
+            }
+
+            .rating-guide {
+                padding: 18px 15px;
+            }
+
+            .rating-guide h3 {
+                font-size: 1rem;
             }
 
             .rating-items {
-                gap: 8px;
+                gap: 6px;
             }
 
             .rating-item {
-                padding: 10px 16px;
-                font-size: 0.85rem;
+                padding: 8px 12px;
+                font-size: 0.8rem;
                 min-width: auto;
+                border-radius: 20px;
             }
 
-            .result-table th,
-            .result-table td {
-                padding: 8px 10px;
+            .btn {
+                padding: 15px 25px;
+                font-size: 1rem;
+            }
+
+            .disclaimer {
+                padding: 12px 15px;
+            }
+
+            .disclaimer-text {
+                font-size: 0.85rem;
+            }
+
+            .time-estimate {
+                font-size: 0.85rem;
+            }
+
+            /* 问题页面H5优化 */
+            .question-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .question-number {
+                font-size: 0.9rem;
+            }
+
+            .answer-stats {
                 font-size: 0.85rem;
             }
 
             .question-title {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
+                padding: 15px 0;
+                margin-bottom: 20px;
+            }
+
+            .option-item {
+                padding: 15px 16px;
+                border-radius: var(--radius-sm);
+            }
+
+            .option-radio {
+                width: 20px;
+                height: 20px;
+                margin-right: 12px;
+            }
+
+            .option-item.selected .option-radio::after {
+                width: 10px;
+                height: 10px;
+            }
+
+            .option-text {
+                font-size: 0.95rem;
+            }
+
+            .options-list {
+                gap: 10px;
             }
 
             .nav-buttons {
                 flex-direction: column;
+                gap: 10px;
+                margin-top: 30px;
+            }
+
+            .btn-nav {
+                padding: 14px 18px;
+                font-size: 0.95rem;
+            }
+
+            /* 结果页面H5优化 */
+            .result-header {
+                padding: 25px 18px;
+            }
+
+            .result-header h2 {
+                font-size: 1.4rem;
+            }
+
+            .result-tip {
+                font-size: 0.8rem;
+                padding: 8px 15px;
+            }
+
+            .result-table-section {
+                padding: 18px;
+            }
+
+            .section-title {
+                font-size: 1rem;
+            }
+
+            .result-table {
+                font-size: 0.8rem;
+            }
+
+            .result-table th,
+            .result-table td {
+                padding: 8px 6px;
+                font-size: 0.75rem;
+            }
+
+            .tag {
+                padding: 3px 8px;
+                font-size: 0.75rem;
+            }
+
+            .instructions {
+                margin: 15px;
+                padding: 15px;
+            }
+
+            .instructions-text {
+                font-size: 0.85rem;
+            }
+
+            .detail-section {
+                padding: 18px;
+            }
+
+            .detail-card {
+                padding: 15px;
+            }
+
+            .detail-card-value .value {
+                font-size: 1.3rem;
             }
 
             .level-guide {
                 flex-wrap: wrap;
-                gap: 10px;
+                gap: 8px;
+                justify-content: space-between;
+            }
+
+            .level-item {
+                font-size: 0.75rem;
+            }
+
+            .interpretation-box {
+                padding: 12px;
+            }
+
+            .interpretation-box p {
+                font-size: 0.85rem;
+            }
+
+            .circle-progress {
+                width: 140px;
+                height: 140px;
+            }
+
+            .circle-progress svg {
+                width: 140px;
+                height: 140px;
+            }
+
+            .center-value {
+                font-size: 1.2rem !important;
+            }
+
+            .dimension-section {
+                padding: 18px;
+            }
+
+            .dimension-card {
+                padding: 15px;
+            }
+
+            .dimension-card-title {
+                font-size: 0.95rem;
+            }
+
+            .dimension-card-scores {
+                font-size: 0.85rem;
+            }
+
+            .dimension-desc {
+                font-size: 0.85rem;
+            }
+
+            .dimension-advice {
+                font-size: 0.8rem;
+                padding: 10px 12px;
+            }
+
+            .factor-explain-section {
+                padding: 18px;
+            }
+
+            .factor-explain-card {
+                padding: 15px;
+            }
+
+            .factor-explain-title {
+                font-size: 0.9rem;
+            }
+
+            .factor-explain-content {
+                font-size: 0.85rem;
+            }
+
+            .result-explain-section {
+                padding: 18px;
+            }
+
+            .result-explain-card {
+                padding: 18px;
+            }
+
+            .result-explain-title {
+                font-size: 1rem;
+            }
+
+            .result-explain-content {
+                font-size: 0.85rem;
+            }
+
+            .result-explain-content p {
+                margin-bottom: 10px;
+            }
+
+            .result-disclaimer {
+                margin: 18px;
+                padding: 12px 15px;
+                font-size: 0.85rem;
+            }
+
+            .btn-restart {
+                margin: 0 18px 18px;
+                width: calc(100% - 36px);
+            }
+        }
+
+        /* 更小屏幕的额外优化 */
+        @media (max-width: 400px) {
+            .container {
+                padding: 8px;
+            }
+
+            .card-header {
+                padding: 22px 15px;
+            }
+
+            .card-header h1 {
+                font-size: 1.3rem;
+            }
+
+            .card-body {
+                padding: 15px;
+            }
+
+            .rating-items {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .rating-item {
+                padding: 10px 15px;
+            }
+
+            .question-title {
+                font-size: 1.1rem;
+            }
+
+            .result-table th,
+            .result-table td {
+                padding: 6px 4px;
+                font-size: 0.7rem;
+            }
+
+            .level-guide {
+                gap: 5px;
+            }
+
+            .level-item {
+                font-size: 0.7rem;
+            }
+
+            .level-item .level-range {
+                font-size: 0.65rem;
             }
         }
 
@@ -1026,7 +1369,7 @@
                         </div>
                         <div class="circle-progress-wrapper">
                             <div class="circle-progress">
-                                <svg width="160" height="160">
+                                <svg viewBox="0 0 160 160" preserveAspectRatio="xMidYMid meet">
                                     <circle class="bg-circle" cx="80" cy="80" r="68"></circle>
                                     <circle class="progress-circle" id="positive-circle" cx="80" cy="80" r="68" 
                                         stroke="#52c41a" 
@@ -1389,35 +1732,67 @@
         }
 
         // 显示问题
-        function showQuestion(index) {
-            currentQuestion = index;
-            document.getElementById('question-title').textContent = questions[index];
-            document.getElementById('question-number').textContent = `问题${index + 1}/90`;
+        function showQuestion(index, animate = false) {
+            const questionTitle = document.getElementById('question-title');
+            const optionsList = document.querySelector('.options-list');
             
-            // 更新进度条
-            const progress = ((index + 1) / 90) * 100;
-            document.getElementById('progress-bar').style.width = progress + '%';
-            
-            // 更新统计
-            const answeredCount = answers.filter(a => a !== null).length;
-            document.getElementById('answered-count').textContent = answeredCount;
-            document.getElementById('unanswered-count').textContent = 90 - answeredCount;
-            
-            // 更新选项状态
-            const options = document.querySelectorAll('.option-item');
-            options.forEach((opt, i) => {
-                opt.classList.remove('selected');
-                if (answers[index] === i + 1) {
-                    opt.classList.add('selected');
+            // 更新内容的函数
+            function updateContent() {
+                currentQuestion = index;
+                questionTitle.textContent = questions[index];
+                document.getElementById('question-number').textContent = `问题${index + 1}/90`;
+                
+                // 更新进度条
+                const progress = ((index + 1) / 90) * 100;
+                document.getElementById('progress-bar').style.width = progress + '%';
+                
+                // 更新统计
+                const answeredCount = answers.filter(a => a !== null).length;
+                document.getElementById('answered-count').textContent = answeredCount;
+                document.getElementById('unanswered-count').textContent = 90 - answeredCount;
+                
+                // 更新选项状态
+                const options = document.querySelectorAll('.option-item');
+                options.forEach((opt, i) => {
+                    opt.classList.remove('selected');
+                    if (answers[index] === i + 1) {
+                        opt.classList.add('selected');
+                    }
+                });
+                
+                // 更新按钮文字
+                const btnNext = document.getElementById('btn-next');
+                if (index === 89) {
+                    btnNext.textContent = '提交测试';
+                } else {
+                    btnNext.textContent = '下一题';
                 }
-            });
+            }
             
-            // 更新按钮文字
-            const btnNext = document.getElementById('btn-next');
-            if (index === 89) {
-                btnNext.textContent = '提交测试';
+            // 如果需要动画效果
+            if (animate) {
+                // 先淡出
+                questionTitle.classList.add('question-fade-out');
+                optionsList.classList.add('question-fade-out');
+                
+                // 淡出完成后更新内容并淡入
+                setTimeout(() => {
+                    updateContent();
+                    
+                    // 移除淡出类，添加淡入类
+                    questionTitle.classList.remove('question-fade-out');
+                    optionsList.classList.remove('question-fade-out');
+                    questionTitle.classList.add('question-fade-in');
+                    optionsList.classList.add('question-fade-in');
+                    
+                    // 淡入完成后清理
+                    setTimeout(() => {
+                        questionTitle.classList.remove('question-fade-in');
+                        optionsList.classList.remove('question-fade-in');
+                    }, 200);
+                }, 150);
             } else {
-                btnNext.textContent = '下一题';
+                updateContent();
             }
         }
 
@@ -1428,8 +1803,14 @@
             const options = document.querySelectorAll('.option-item');
             options.forEach((opt, i) => {
                 opt.classList.remove('selected');
+                opt.classList.remove('ripple');
                 if (i + 1 === value) {
                     opt.classList.add('selected');
+                    opt.classList.add('ripple');
+                    // 移除波纹效果
+                    setTimeout(() => {
+                        opt.classList.remove('ripple');
+                    }, 400);
                 }
             });
             
@@ -1438,25 +1819,25 @@
             document.getElementById('answered-count').textContent = answeredCount;
             document.getElementById('unanswered-count').textContent = 90 - answeredCount;
             
-            // 自动跳转下一题（最后一题除外）
+            // 自动跳转下一题（最后一题除外），带动画效果
             if (currentQuestion < 89) {
                 setTimeout(() => {
-                    showQuestion(currentQuestion + 1);
-                }, 300);
+                    showQuestion(currentQuestion + 1, true);
+                }, 250);
             }
         }
 
         // 上一题
         function prevQuestion() {
             if (currentQuestion > 0) {
-                showQuestion(currentQuestion - 1);
+                showQuestion(currentQuestion - 1, true);
             }
         }
 
         // 下一题
         function nextQuestion() {
             if (currentQuestion < 89) {
-                showQuestion(currentQuestion + 1);
+                showQuestion(currentQuestion + 1, true);
             } else {
                 // 检查是否所有题目都已作答
                 const unanswered = answers.filter(a => a === null).length;
